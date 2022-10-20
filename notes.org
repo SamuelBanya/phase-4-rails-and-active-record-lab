@@ -1,0 +1,64 @@
+* Notes
+<2022-10-19 Wed 20:33>: I ran the following commands:
+#+begin_src bash
+bundle install
+
+learn test
+#+end_src
+
+I then created the associated model with the 'rails g' command:
+#+begin_src bash
+samuelbanya@Samuels-MBP ~/hub/Development/code/phase-4/phase-4-rails-and-active-record-lab $ rails g model Student first_name last_name grade:integer --no-test-framework
+      invoke  active_record
+      create    db/migrate/20221020013528_create_students.rb
+      create    app/models/student.rb
+#+end_src
+
+I then modified the 'app/models/student.rb' related 'Student' model file with the following contents as per the lab's instructions:
+#+begin_src ruby
+class Student < ApplicationRecord
+    # First attempt:
+    # def initialize(first_name, last_name, grade)
+    #     @first_name = first_name
+    #     @last_name = last_name
+    #     @grade = grade
+    # end
+
+    # Add an instance method Student#to_s which will return the student's first name and last name concatenated with a space between.
+    # For example: calling .to_s on a student with a first_name of "Dwayne" and a last_name of "Johnson" should return "Dwayne Johnson".
+
+    # NOTE: Awful hint, doesn't even state that a single string should be returned, very awkward
+    def to_s()
+        # First Attempt:
+        # full_name = @first_name + " " + @last_name
+        # full_name
+        # Second Attempt
+        "#{first_name} #{last_name}"
+    end
+end
+#+end_src
+
+I then ran the related 'rails db:migrate' command accordingly:
+#+begin_src ruby
+samuelbanya@Samuels-MBP ~/hub/Development/code/phase-4/phase-4-rails-and-active-record-lab $ rails db:migrate
+== 20221020013528 CreateStudents: migrating ===================================
+-- create_table(:students)
+   -> 0.0021s
+== 20221020013528 CreateStudents: migrated (0.0021s) ==========================
+#+end_src
+
+I then checked my work with the 'rails c' command:
+#+begin_src bash
+samuelbanya@Samuels-MBP ~/hub/Development/code/phase-4/phase-4-rails-and-active-record-lab $ rails db:migrate
+
+Loading development environment (Rails 6.1.3.1)
+2.7.0 :001 > dwayne = Student.new()
+   (0.8ms)  SELECT sqlite_version(*)
+2.7.0 :002 > dwayne
+ => #<Student id: nil, first_name: nil, last_name: nil, grade: nil, created_at: nil, updated_at: nil>
+2.7.0 :003 > dwayne.first_name = "Dwayne"
+2.7.0 :004 > dwayne.last_name = "Johnson"
+2.7.0 :005 > dwayne.to_s()
+ => "Dwayne Johnson"
+2.7.0 :006 > exit
+#+end_src
